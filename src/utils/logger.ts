@@ -1,3 +1,5 @@
 export const logger = (...args: any[]) => {
-  console.log(...args);
+    if (process.env.NODE_ENV === "development") {
+        console.log("[DEV LOG]", ...args);
+    }
 };

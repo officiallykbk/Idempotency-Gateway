@@ -1,0 +1,90 @@
+openapi: 3.0.0
+info:
+  title: Idempotency Gateway
+  description: |-
+    A documentation for an Idempotency-Gateway
+
+    Some useful links:
+    - [GitHub repository](https://github.com/officiallykbk/Idempotency-Gateway)
+  version: v1.0
+    
+servers:
+  - url: http://localhost:3000
+    description: Local connection
+
+paths:
+  /:
+    get:
+      summary: Welcome to the API
+      responses:
+        '200':
+          description: Welcome message
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Welcome to Idempotency-Gateway
+  /health:
+    get:
+      summary: Health check endpoint
+      responses:
+        '200':
+          description: Server status
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Server is running
+  /api/process-payment:
+    post:
+      summary: Process a payment
+      description: Process a payment idempotently. Requires an Idempotency-Key header.
+      parameters:
+        - in: header
+          name: Idempotency-Key
+          schema:
+            type: string
+          required: true
+          description: Unique key to ensure idempotency.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - amount
+                - currency
+              properties:
+                amount:
+                  type: number
+                  example: 100.5
+                currency:
+                  type: string
+                  example: GHS
+      responses:
+        '201':
+          description: Payment processed successfully
+          headers:
+            Idempotency-Key-Used:
+              description: Indicates if the response was served from cache
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                type: object
+        '400':
+          description: Bad request (missing header or invalid body)
+        '409':
+          description: Payment is still processing
+        '422':
+          description: Idempotency key already used for a different request body
+        '500':
+          description: Internal server error

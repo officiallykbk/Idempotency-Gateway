@@ -19,8 +19,3 @@ export const connectDB = async () => {
   }
 };
 
-process.on('SIGTERM', async () => {
-  logger('SIGTERM received → disconnecting MongoDB');
-  await mongoose.disconnect();
-  process.exit(0);
-});

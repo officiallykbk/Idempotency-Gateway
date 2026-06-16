@@ -1,10 +1,9 @@
 import express, { NextFunction, type Application, type Request, type Response } from 'express';
 import { globalErrorHandler } from './middleware/globalerrorHandler';
-import { logger } from './utils/logger';
 import cors from 'cors';
 import createHttpError from 'http-errors';
 import { setupSwagger } from './utils/swagger';
-import routes from './routes';
+import routes from './routes/payment.route';
 
 const app: Application = express();
 
