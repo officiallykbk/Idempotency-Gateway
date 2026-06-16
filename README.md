@@ -84,7 +84,7 @@ Simulates processing a payment.
       "processedAt": "2026-06-16T12:00:00.000Z"
     }
     ```
-  - **Header (On Replay):** `Idempotency-Key-Used: true`
+  - **Header (On Replay):** `X-Cache-Hit: true`
 - **Error Responses:**
   - `400 Bad Request`: Missing header or invalid body.
   - `409 Conflict`: Payment is currently in flight (processing).
@@ -108,10 +108,12 @@ Simulates processing a payment.
 ---
 
 ## 5. The Developer's Choice
+**Feature Added** Automatic expiration of idempotency records using MongoDB TTL indexes.
 
-**Feature Added:** Standardized Release & Semantic Versioning Automation
-**Why:** In a real-world Fintech company, knowing exactly what changed between deployments is critical for compliance, auditing, and rollback strategies. 
+**Why:** This ensures old keys are automatically removed after 24 hours, preventing unnecessary storage growth while still protecting clients during realistic retry windows.
 
-I implemented a release pipeline using `standard-release` (built on Release It!). This tool automatically parses conventional commits (e.g., `feat:`, `fix:`, `docs:`), bumps the semantic version in `package.json`, generates a changelog, and tags the git history. 
+Why it matters:
 
-This ensures that every artifact deployed to production has a traceable, immutable history, reducing human error during the release process.
+- Reduces storage usage
+- Requires no cleanup jobs
+- Matches real-world payment retry behavior

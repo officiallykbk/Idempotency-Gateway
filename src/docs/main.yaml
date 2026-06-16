@@ -72,7 +72,7 @@ paths:
         '201':
           description: Payment processed successfully
           headers:
-            Idempotency-Key-Used:
+            X-Cache-Hit:
               description: Indicates if the response was served from cache
               schema:
                 type: string
