@@ -6,7 +6,7 @@
     "build": "tsc",
     "start": "node dist/server.js",
     "dev": "cross-env NODE_ENV=development tsx watch src/server.ts",
-    "test": "cross-env NODE_OPTIONS=--experimental-vm-modules jest --watchAll --coverage",
+    "test": "cross-env NODE_OPTIONS=--experimental-vm-modules jest --config jest.config.js --runInBand --coverage",
     "release": "standard-release release"
   },
   "keywords": [],
